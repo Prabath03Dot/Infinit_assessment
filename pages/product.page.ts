@@ -170,7 +170,8 @@ async countProducts(){
 
     while (await deleteButtons.count() > 0) {
       await this.page.waitForLoadState('load', { timeout: 90000 });
-        await deleteButtons.first().click({ timeout: 90000 });
+        await deleteButtons.click({ force: true, timeout: 90000 });
+        // await deleteButtons.first().click({ timeout: 90000 });
         await this.page.waitForLoadState('load', { timeout: 90000 });
     }
     }
