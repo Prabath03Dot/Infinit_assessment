@@ -40,6 +40,7 @@ export class ProductPage extends BasePage{
     this.emptyCartMessage = page.getByText('Cart is empty! Click here to');
     this.deleteCartItemButton = page.locator('.cart_quantity_delete');
     this.addToCartButtonSelector = 'a.add-to-cart';
+
   }
 
   async openProducts() {
@@ -48,18 +49,18 @@ export class ProductPage extends BasePage{
   }
 
   async searchProduct(productName: string) {
-    await this.page.waitForLoadState('load', { timeout: 90000 });
+    await this.page.waitForLoadState('load');
     await this.waitForNetworkIdle();
     await this.expectVisible(this.searchInput);
     await this.searchInput.fill(data.productName);
     await this.expectVisible(this.searchButton);
     await this.clickLoctor(this.searchButton);
-    await this.page.waitForLoadState('load', { timeout: 90000 });
+    await this.page.waitForLoadState('load');
     await this.waitForNetworkIdle();
   }
 
   async verifySearchedProduct(expectedProductName: string) {
-    await this.page.waitForLoadState('load', { timeout: 90000 });
+    await this.page.waitForLoadState('load');
     await this.waitForNetworkIdle();
     await this.expectVisible(this.productName);
     await expect(this.productName).toContainText(expectedProductName);
@@ -68,8 +69,10 @@ export class ProductPage extends BasePage{
 
   async addProductToCart() {
     await this.waitForNetworkIdle();
+    await this.productName.hover({timeout: 90000});
     await this.expectVisible(this.productName);
     console.log('Product: ' + await this.productName.textContent());
+
     await this.expectVisible(this.addToCartButton);
     await this.clickLoctor(this.addToCartButton);
     await this.waitForNetworkIdle();
@@ -126,34 +129,28 @@ async countProducts(){
         console.log('Selected Product: ' + await productInfo.textContent());
         const productInfoTextContent = await productInfo.innerText();
 
-        await product.waitFor({ state: 'visible', timeout: 90000 });
+        await product.waitFor({ state: 'visible'});
         await this.waitForNetworkIdle();
-        await product.scrollIntoViewIfNeeded({ timeout: 90000 });
-        await this.page.waitForLoadState('load', { timeout: 90000 });
+        await product.scrollIntoViewIfNeeded();
+        await this.page.waitForLoadState('load');
         await this.waitForNetworkIdle();
-        await product.hover({timeout: 90000});
-        await this.page.waitForLoadState('load', { timeout: 90000 });
+        await product.hover();
+        await this.page.waitForLoadState('load');
         await this.waitForNetworkIdle();
         await product.locator(this.addToCartButton).click({timeout: 90000});
 
         return productInfoTextContent;
     }
 
-    // async selectProductByName(productName: string) {
-    //     const product = this.singleProducts.filter({ hasText: productName });
-    //     const addButton = product.locator(this.addToCartButtonSelector);
-    //     await addButton.click({ timeout: 50000 });
-    // }
-
     async selectProductByName(productName: string) {
-      await this.page.waitForLoadState('load', { timeout: 90000 });
+      await this.page.waitForLoadState('load');
         await this.waitForNetworkIdle();
         const product = await this.singleProducts.filter({ hasText: productName });
-        await product.waitFor({ state: 'visible', timeout: 90000 });
-        await product.scrollIntoViewIfNeeded({ timeout: 90000 });
-        await this.page.waitForLoadState('load', { timeout: 90000 });
-        await product.hover({timeout: 90000});
-        await this.page.waitForLoadState('load', { timeout: 90000 });
+        await product.waitFor({ state: 'visible' });
+        await product.scrollIntoViewIfNeeded();
+        await this.page.waitForLoadState('load');
+        await product.hover();
+        await this.page.waitForLoadState('load');
         await this.waitForNetworkIdle();
         await product.locator(this.addToCartButton).click({timeout: 90000});
     }
@@ -169,10 +166,11 @@ async countProducts(){
     const deleteButtons = this.deleteCartItemButton;
 
     while (await deleteButtons.count() > 0) {
-      await this.page.waitForLoadState('load', { timeout: 90000 });
-        await deleteButtons.click({ force: true, timeout: 90000 });
-        // await deleteButtons.first().click({ timeout: 90000 });
-        await this.page.waitForLoadState('load', { timeout: 90000 });
+      await this.page.waitForLoadState('load');
+      await this.waitForNetworkIdle();
+        await deleteButtons.first().click({ force: true });
+        await this.page.waitForLoadState('load');
+        await this.waitForNetworkIdle();
     }
     }
 
