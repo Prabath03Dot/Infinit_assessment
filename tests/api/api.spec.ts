@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
+const API_BASE_URL = process.env.API_BASE_URL;
 
 test('GET all posts - schema validation ', async ({ request }) => {
   const response = await request.get(`${API_BASE_URL}/posts`);

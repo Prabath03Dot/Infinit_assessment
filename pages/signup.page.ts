@@ -2,6 +2,9 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import data from '../utils/testData.json';
 
+const REG_EMAIL = process.env.REG_EMAIL;
+const REG_PASSWORD = process.env.LOG_PASSWORD;
+
 export class SignupPage extends BasePage{
   readonly signupLoginLink: Locator;
   readonly nameInput: Locator;
@@ -59,7 +62,7 @@ export class SignupPage extends BasePage{
     await this.expectVisible(this.nameInput);
     await this.nameInput.fill(data.name);
     await this.expectVisible(this.emailInput);
-    await this.emailInput.fill(data.reg_email + random3Digit + '@u.com');
+    await this.emailInput.fill(REG_EMAIL as string + random3Digit + '@u.com');
     await this.expectVisible(this.signupButton);
     await this.clickLoctor(this.signupButton);
     await this.waitForNetworkIdle();
@@ -67,7 +70,7 @@ export class SignupPage extends BasePage{
 
   async fillAccountDetails() {
     await this.titleMrRadio.check({timeout: 10000});
-    await this.passwordInput.fill(data.password);
+    await this.passwordInput.fill(REG_PASSWORD as string);
     await this.firstNameInput.fill(data.firstName);
     await this.lastNameInput.fill(data.lastName);
     await this.addressInput.fill(data.address);
