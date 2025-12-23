@@ -14,3 +14,4 @@ test('login flow', async ({ page }) => {
     await loginPage.login(LOG_EMAIL as string, LOG_PASSWORD as string);
     await basePage.verifyLoggedInAsUsername();
 })
+
